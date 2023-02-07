@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "activable": "^1.0.4",
+    "rethinkdbdash-timestampable": "^0.0.2"
+  }
+}
