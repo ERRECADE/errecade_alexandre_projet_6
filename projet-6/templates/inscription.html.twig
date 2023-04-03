@@ -1,0 +1,40 @@
+{% extends "baseneutre.html.twig" %}
+
+{% block body %}
+
+
+<div style ="margin-top: 10em; margin-bottom: 10em;">
+  <main class="form-signin h-100 w-50 m-auto" >
+    {{ form_start(form, {'method': 'POST'} ) }}
+
+
+      <h1 class="h3 mb-3 fw-normal">Inscriptions</h1>
+      <div class="form-floating">
+     {# form_label rend le label ; #}
+         {{ form_row(form.name) }}
+         {# <input type="text" class="form-control" id="floatingName" name="floatingName" placeholder="pierre"> #}
+      </div>
+      <div class="form-floating"> 
+        {# <input type="text" class="form-control" id="floatingPrenom" name="floatingPrenom" placeholder="obama">
+        <label for="floatingPrenom">Prenom</label> #}
+          
+         {{ form_row(form.first_name) }}
+      </div>
+
+      <div class="form-floating">
+        {# <input type="email" class="form-control" id="floatingInput" name="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Adresse email</label> #}
+          
+         {{ form_row(form.mail) }}
+      </div>
+      <div class="form-floating">
+        {# <input type="password" class="form-control" id="floatingPassword" name="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Mot de passe</label> #}
+          
+         {{ form_row(form.password) }}
+      </div>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">inscriptions</button>
+    {{ form_end(form) }}
+  </main>
+</div>
+{% endblock %}
