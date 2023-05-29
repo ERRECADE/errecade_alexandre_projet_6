@@ -37,13 +37,13 @@ class Media
     private $video;
 
     /**
-     * @ORM\OneToMany(targetEntity=Figure::class, mappedBy="media")
+     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="medias" , cascade={"persist"})
      */
-    private $figures;
+    private $figure;
 
     public function __construct()
     {
-        $this->figures = new ArrayCollection();
+         //$this->figure = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,33 +87,15 @@ class Media
         return $this;
     }
 
-    /**
-     * @return Collection<int, Figure>
-     */
-    public function getFigures(): Collection
+    public function getFigure(): ?Figure
     {
-        return $this->figures;
+        return $this->figure;
     }
-
-    public function addFigure(Figure $figure): self
+    
+    public function setFigure(?Figure $figure): self
     {
-        if (!$this->figures->contains($figure)) {
-            $this->figures[] = $figure;
-            $figure->setMedia($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFigure(Figure $figure): self
-    {
-        if ($this->figures->removeElement($figure)) {
-            // set the owning side to null (unless already changed)
-            if ($figure->getMedia() === $this) {
-                $figure->setMedia(null);
-            }
-        }
-
+        $this->figure = $figure;
+    
         return $this;
     }
 }

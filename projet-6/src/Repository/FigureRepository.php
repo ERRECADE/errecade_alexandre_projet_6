@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Figure;
+use App\Entity\Media;
+use App\Entity\Commentary;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -38,29 +40,26 @@ class FigureRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    
+    public function findAllFigures()
+    {
+        return $this->createQueryBuilder('f')
+            ->addSelect('m')
+            ->leftJoin('f.medias','m')
+            ->getQuery()
+            ->getResult()
+            ;
+       ;
 
-//    /**
-//     * @return Figure[] Returns an array of Figure objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Figure
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    }
+    public function findOneByFigures($id)
+    {
+        return $this->createQueryBuilder('f')
+            ->addSelect('m')
+            ->leftJoin('f.medias', 'm')
+            ->andWhere('f.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
 }

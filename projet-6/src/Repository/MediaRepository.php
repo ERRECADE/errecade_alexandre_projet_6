@@ -38,7 +38,16 @@ class MediaRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
+    
+    // public function findOneByIdFigure($figureId)
+    // {
+    //         return $this->createQueryBuilder('m')
+    //        ->andWhere('m.figure = :figureId')
+    //        ->setParameter('figureId', $figureId)
+    //        ->getQuery()
+    //        ->getResult()
+    //    ;
+    // }
 //    /**
 //     * @return Media[] Returns an array of Media objects
 //     */

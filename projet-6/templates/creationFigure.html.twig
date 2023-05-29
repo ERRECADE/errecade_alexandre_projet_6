@@ -1,0 +1,55 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div style ="margin-top: 10em; margin-bottom: 10em;">
+  <main class="form-signin h-100 w-50 m-auto" >
+    {{ form_start(form, {'method': 'POST'} ) }}
+      <h1 class="h3 mb-3 fw-normal">Inscriptions</h1>
+      <div class="form-floating">
+         {{ form_row(form.name) }}
+      </div>
+      <div class="form-floating">  
+         {{ form_row(form.description) }}
+      </div>
+      <ul class="form-floating medias"   
+         data-index="{{ form.medias|length > 0 ? form.medias|last.vars.name + 1 : 0 }}"
+         data-prototype="{{ form_widget(form.medias.vars.prototype)|e('html_attr') }}" 
+         >
+         {% for media in form.medias %}
+               <li>{{ form_row(media.type) }}</li>
+               <li>{{ form_row(media.video) }}</li>
+               <li>{{ form_row(media.picture) }}</li>
+         {% endfor %}
+      </ul>
+      <button type="button" class="add_item_link" data-collection-holder-class="medias">Ajouter un média</button>
+      <div class="form-floating">
+         {{ form_row(form.groupe) }}
+      </div>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">inscriptions</button>
+    {{ form_end(form) }}
+  </main>
+</div>
+<script>
+      const addFormToCollection = (e) => {
+         const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+         const item = document.createElement('li');
+      
+         item.innerHTML = collectionHolder
+            .dataset
+            .prototype
+            .replace(
+            /__name__/g,
+            collectionHolder.dataset.index
+            );
+      
+         collectionHolder.appendChild(item);
+      
+         collectionHolder.dataset.index++;
+   };
+   document.querySelectorAll('.add_item_link')
+   .forEach(btn => {
+      console.log('1')
+         btn.addEventListener("click", addFormToCollection)
+   });
+</script>
+{% endblock %}

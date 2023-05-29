@@ -23,7 +23,6 @@ class MailerController extends AbstractController
      */    
     public function sendEmail(MailerInterface $mailer,Request $request,MailerService $MailerService)
     {
-        error_log('je suis controller mailer');
         $params = $request->getContent();
         $MailerService->sendEmail($params);
     }
