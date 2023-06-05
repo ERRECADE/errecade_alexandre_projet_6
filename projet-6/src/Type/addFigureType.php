@@ -8,9 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use App\Form\Type\mediaType;
 use App\Entity\Figure;
-use App\Entity\Groupe;
 class addFigureType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -18,13 +16,19 @@ class addFigureType extends AbstractType
         $builder   
             ->add('name' ,TextType::class)
             ->add('description', TextareaType::class)
-            ->add('medias', CollectionType::class, [
-                'entry_type' => mediaType::class,
+            ->add('videos', CollectionType::class, [
+                'entry_type' => VideoType::class,
                 'entry_options' => ['label' => true],
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => true,
-
+            ])
+            ->add('pictures', CollectionType::class, [
+                'entry_type' => PictureType::class,
+                'entry_options' => ['label' => true],
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
             ])
             ->add('groupe' )
 

@@ -1,55 +1,89 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-<div style ="margin-top: 10em; margin-bottom: 10em;">
-  <main class="form-signin h-100 w-50 m-auto" >
-    {{ form_start(form, {'method': 'POST'} ) }}
-      <h1 class="h3 mb-3 fw-normal">Inscriptions</h1>
+<div style="margin-top: 10em; margin-bottom: 10em;">
+  <main class="form-signin h-100 w-50 m-auto">
+    {{ form_start(form, {'method': 'POST'}) }}
+      <h1 class="h3 mb-3 fw-normal">Ajoutez un nouvelle figure</h1>
       <div class="form-floating">
          {{ form_row(form.name) }}
       </div>
-      <div class="form-floating">  
+      <div class="form-floating">
          {{ form_row(form.description) }}
       </div>
-      <ul class="form-floating medias"   
-         data-index="{{ form.medias|length > 0 ? form.medias|last.vars.name + 1 : 0 }}"
-         data-prototype="{{ form_widget(form.medias.vars.prototype)|e('html_attr') }}" 
+      <ul class="form-floating videos"
+         data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}"
+         data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}"
          >
-         {% for media in form.medias %}
-               <li>{{ form_row(media.type) }}</li>
-               <li>{{ form_row(media.video) }}</li>
-               <li>{{ form_row(media.picture) }}</li>
+         {% for video in form.videos %}
+               <li>{{ form_row(video.link) }}</li>
          {% endfor %}
       </ul>
-      <button type="button" class="add_item_link" data-collection-holder-class="medias">Ajouter un média</button>
+      <button type="button" class="add_item_link_video" data-collection-holder-class="videos">Ajouter un vidéo</button>
+
+      <ul class="form-floating pictures"
+         data-index="{{ form.pictures|length > 0 ? form.pictures|last.vars.name + 1 : 0 }}"
+         data-prototype="{{ form_widget(form.pictures.vars.prototype)|e('html_attr') }}"
+         >
+         {% for picture in form.pictures %}
+               <li>
+                  {% if picture.vars.data.link is not null %}
+                  <span>Image existante : {{ picture.vars.data.link }}</span><br>
+                  {% endif %}
+                  {{ form_row(picture.file) }}
+               </li>
+         {% endfor %}
+      </ul>
+      <button type="button" class="add_item_link_picture" data-collection-holder-class="pictures">Ajouter une picture</button>
       <div class="form-floating">
          {{ form_row(form.groupe) }}
       </div>
-      <button class="w-100 btn btn-lg btn-primary" type="submit">inscriptions</button>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Valider</button>
     {{ form_end(form) }}
   </main>
 </div>
 <script>
-      const addFormToCollection = (e) => {
-         const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
-         const item = document.createElement('li');
-      
-         item.innerHTML = collectionHolder
+    const addFormToCollection = (collectionHolder, collectionType) => {
+        const item = document.createElement('li');
+        const deleteButton = document.createElement('button');
+
+        item.innerHTML = collectionHolder
             .dataset
             .prototype
-            .replace(
-            /__name__/g,
-            collectionHolder.dataset.index
-            );
-      
-         collectionHolder.appendChild(item);
-      
-         collectionHolder.dataset.index++;
-   };
-   document.querySelectorAll('.add_item_link')
-   .forEach(btn => {
-      console.log('1')
-         btn.addEventListener("click", addFormToCollection)
-   });
+            .replace(/__name__/g, collectionHolder.dataset.index);
+
+        deleteButton.innerText = `Supprimer la ${collectionType}`;
+        deleteButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            item.remove();
+        });
+
+        item.appendChild(deleteButton);
+        collectionHolder.appendChild(item);
+        collectionHolder.dataset.index++;
+    };
+
+    const setupCollectionForms = (collectionType, buttonClass, collectionClass) => {
+        const addButton = document.querySelector(`.${buttonClass}`);
+        const collectionHolder = document.querySelector(`.${collectionClass}`);
+
+        addButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            addFormToCollection(collectionHolder, collectionType);
+        });
+
+        collectionHolder.querySelectorAll('li').forEach((item) => {
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = `Supprimer la ${collectionType}`;
+            deleteButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                item.remove();
+            });
+            item.appendChild(deleteButton);
+        });
+    };
+
+    setupCollectionForms('vidéo', 'add_item_link_video', 'videos');
+    setupCollectionForms('image', 'add_item_link_picture', 'pictures');
 </script>
 {% endblock %}
