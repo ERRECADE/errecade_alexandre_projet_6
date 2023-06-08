@@ -8,6 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Helper\YoutubeHelper;
+use Twig\Environment;
+use App\Twig\YouTubeExtension;
 
 use App\Entity\Figure;
 use App\Entity\Media;
@@ -19,6 +22,11 @@ use DateTime;
  */
 class FigureController extends AbstractController
 {
+    private $youtubeHelper;
+    public function __construct(YoutubeHelper $youtubeHelper)
+    {
+        $this->youtubeHelper = $youtubeHelper;
+    }
     /**
      * Page de création
      * 
@@ -96,13 +104,13 @@ class FigureController extends AbstractController
      *
      * @Route("/detail/{id}", name="detail")
      */
-    public function detailsFigure($id, FigureRepository $figureRepository)
+    public function detailsFigure($id, FigureRepository $figureRepository, Environment $twig)
     {
         $figure = $figureRepository->findOneByFigures($id);
-    
         return $this->render('details.html.twig', array(
             'figure' => $figure
         ));
     }
 
 }
+

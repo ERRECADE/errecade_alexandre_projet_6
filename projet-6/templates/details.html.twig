@@ -1,14 +1,21 @@
 {% extends "base.html.twig" %}
-
 {% block body %}
 <div class="text-center">
     {% set premierMedia = figure.firstPicture %}
-    {%  if premierMedia is defined and premierMedia is not null  %}
+    {% if premierMedia is defined and premierMedia is not null %}
       <img class="img-fluid rounded mx-auto d-block" src="{{ asset('uploads/photos/' ~ premierMedia.link) }}" style="max-width: 700px; max-height: 700px;">
     {% else %}
-      <img class="img-fluid" src="{{asset ('assets/img/portfolio/cabin.png')}}" alt="..." />
+      <img class="img-fluid" src="{{ asset('assets/img/portfolio/cabin.png') }}" alt="...">
     {% endif %}
-    <div class="row justify-content-center" style="margin: 2em;">
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+      <a href="{{ path('figure_update', { 'id': figure.id }) }}">
+        <img class="img-fluid" style="margin-top: 1em;" src="{{ asset('assets/img/pen.png') }}" alt="...">
+      </a>
+      <a href="{{ path('figure_delete', { 'id': figure.id }) }}">
+        <img class="img-fluid" style="margin-left: 3em; margin-top: 1em;" src="{{ asset('assets/img/poubelle.png') }}" alt="...">
+      </a>
+    {% endif %}
+    <div class="row justify-content-center" style="margin: 3em;">
       <div class="col-12 col-md-6 d-flex flex-wrap">
         {% for picture in figure.pictures %}
           <div class="col-sm-4">
@@ -18,29 +25,45 @@
       </div>
       <div class="col-12 col-md-6 d-flex flex-wrap">
         {% for video in figure.videos %}
-          <div class="col-sm-4">
-            <div class="embed-responsive embed-responsive-1by1" style="max-width: 200px; max-height: 200px; margin-top: 2em; margin-left: 2em; margin-right: auto;">
-              <iframe class="embed-responsive-item" src="{{ video.link }}" allowfullscreen></iframe>
+          {% set videoId = getYouTubeVideoId(video.link) %}
+            {% if videoId is not null %}
+              <div class="video-container" style="max-width: 200px; max-height: 200px; margin-top: 2em; margin-left: 2em; margin-right: auto;">
+                <iframe src="https://www.youtube.com/embed/{{ videoId }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              </div>
+            {% else %}
+              <p>URL de vidéo YouTube invalide.</p>
+            {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="row justify-content-center" style="margin: 2em;">
+      <div class="col-12 col-md-8">
+        <p>
+          {{ figure.description }}
+        </p>
+        <hr class="my-4">
+        <div class="d-flex justify-content-between">
+          <div class="border p-3">
+            {{ figure.name }}
+          </div>
+          <div class="border p-3">
+            {{ figure.createdAt.format('Y-m-d') }}
+          </div>
+        </div>
+        <hr class="my-5">
+        {# ici on mettra le form pour les commentaries #}
+        <hr class="my-5">
+        {% for comment in figure.commentaries %}
+          <div class="border p-3" style="margin-bottom: 1em;">
+            <div>
+              <h4 class="text-primary">{{ comment.title }}</h4>
+            </div>
+            <div>
+              {{ comment.message }}
             </div>
           </div>
         {% endfor %}
       </div>
     </div>
-  <div class="row justify-content-center" style="margin: 2em;">
-    <div class="col-12 col-md-8">
-      <p>
-        {{figure.description}}
-      </p>
-      <hr class="my-4">
-      <div class="d-flex justify-content-between">
-        <div class="border p-3">
-          {{figure.name}}
-        </div>
-        <div class="border p-3">
-          {{figure.createdAt.format('Y-m-d')}}
-        </div>
-      </div>
-    </div>
   </div>
-</div>
 {% endblock %}

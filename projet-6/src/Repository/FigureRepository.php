@@ -57,6 +57,7 @@ class FigureRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('f')
             ->addSelect('m')
             ->leftJoin('f.medias', 'm')
+            ->leftJoin('f.commentaries','c')
             ->andWhere('f.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
