@@ -14,8 +14,11 @@ use App\Twig\YouTubeExtension;
 
 use App\Entity\Figure;
 use App\Entity\Media;
+use App\Entity\Commentary;
 use App\Form\Type\addFigureType;
+use App\Form\Type\CommentaryType;
 use App\Repository\FigureRepository;
+use App\Repository\CommentaryRepository;
 use DateTime;
 /**
  * @Route("/figure", name="figure_")
@@ -104,11 +107,27 @@ class FigureController extends AbstractController
      *
      * @Route("/detail/{id}", name="detail")
      */
-    public function detailsFigure($id, FigureRepository $figureRepository, Environment $twig)
+    public function detailsFigure($id, FigureRepository $figureRepository, CommentaryRepository $commentaryRepository, Request $request)
     {
+
         $figure = $figureRepository->findOneByFigures($id);
+        $comme = new Commentary();
+        $form = $this->createForm(CommentaryType::class, $comme);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if($this->getUser()){
+                $comme->setUser($this->getUser());
+            }
+            else{
+                $comme->setUser(null);
+            }
+            $comme->setFigure($figure);
+            $commentaryRepository->add($comme, true);
+            return $this->redirectToRoute('figure_detail', ['id' => $id]);
+        }
         return $this->render('details.html.twig', array(
-            'figure' => $figure
+            'figure' => $figure,
+            'form' => $form->createView()
         ));
     }
 

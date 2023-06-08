@@ -51,15 +51,31 @@
           </div>
         </div>
         <hr class="my-5">
-        {# ici on mettra le form pour les commentaries #}
+          <main class="form-signin" >
+            {{ form_start(form, {'method': 'POST'} ) }}
+                {{ form_row(form.title) }}
+                {{ form_row(form.message) }}
+              <button class="w-25 btn btn-lg btn-primary" type="submit">Laisse donc un commentaire</button>
+            {{ form_end(form) }}
+          </main>
         <hr class="my-5">
-        {% for comment in figure.commentaries %}
+         {% for comment in figure.commentaries %}
           <div class="border p-3" style="margin-bottom: 1em;">
             <div>
               <h4 class="text-primary">{{ comment.title }}</h4>
             </div>
             <div>
               {{ comment.message }}
+            </div>
+            <div>
+             Auteur : {% if comment.user %}
+                        {{ comment.user.name }} {{ comment.user.firstName }} <img src="{{ asset('assets/img/avataaars.svg') }}" alt="Avatar" class="avatar" style="width: 30px; height: 30px;">
+                      {% else %}
+                        Anonyme
+                      {% endif %}
+            </div>
+            <div>
+             Date : {{ comment.createdAt.format('Y-m-d') }}
             </div>
           </div>
         {% endfor %}
