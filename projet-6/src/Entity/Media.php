@@ -6,7 +6,8 @@ use App\Repository\MediaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\ORM\Query\AST\UpdateItem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass=MediaRepository::class)
@@ -29,15 +30,12 @@ class Media
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $picture;
+    private $link;
+    private $file;
+
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $video;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="medias" , cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="medias" , cascade={"persist", "remove"})
      */
     private $figure;
 
@@ -63,26 +61,26 @@ class Media
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getLink(): ?string
     {
-        return $this->picture;
+        return $this->link;
     }
 
-    public function setPicture(?string $picture): self
+    public function setLink(?string $link): self
     {
-        $this->picture = $picture;
+        $this->link = $link;
 
         return $this;
     }
 
-    public function getVideo(): ?string
+    public function getFile(): ?UploadedFile
     {
-        return $this->video;
+        return $this->file;
     }
 
-    public function setVideo(?string $video): self
+    public function setFile( ?UploadedFile $file): self
     {
-        $this->video = $video;
+        $this->file = $file;
 
         return $this;
     }

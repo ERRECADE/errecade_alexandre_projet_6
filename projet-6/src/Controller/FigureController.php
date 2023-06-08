@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Figure;
 use App\Entity\Media;
@@ -25,33 +27,19 @@ class FigureController extends AbstractController
     public function createFigure(Request $request,FigureRepository $figuresRepository)
     {
         $directoryPhoto = realpath(__DIR__ . '/../../public/uploads/photos');
-        $date = new DateTime;
-        $user = $this->getUser();
-        $figures = new Figure();
-        $form = $this->createForm(addFigureType::class, $figures);
+        $figure = new Figure();
+        $form = $this->createForm(addFigureType::class, $figure);
         $form->handleRequest($request);
-        $figures->setUser($user);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('medias')->get(0)->get('picture')->getData() != null) {
-                $medias = $form->get('medias');
-
-                for ($i = 0; $i < count($medias); $i++) {
-                    $pictureForm = $medias[$i]->get('picture');
-                    $photoFile = $pictureForm->getData();
-
-                    if ($photoFile instanceof UploadedFile && $photoFile->isValid()) {
-                        $newFilename = uniqid() . '.' . $photoFile->getClientOriginalExtension();
-                        $photoFile->move($directoryPhoto, $newFilename);
-
-                        $mediaEntity = $figures->getMedias()[$i];
-                        $mediaEntity->setPicture($newFilename);
-                    }
+            $figure->setUser($this->getUser());
+            foreach ($figure->getPictures() as $picture) {
+                if ($picture->getFile() instanceof UploadedFile && $picture->getFile()->isValid()) {
+                    $newFilename = uniqid() . '.' . $picture->getFile()->getClientOriginalExtension();
+                    $picture->getFile()->move($directoryPhoto, $newFilename);
+                    $picture->setLink($newFilename);
                 }
-                
             }
-
-            $figures->setCreatedAt($date);
-            $figuresRepository->add($figures, true);
+            $figuresRepository->add($figure, true);
             return $this->redirectToRoute('home');
         }
         return $this->render('creationFigure.html.twig', array(
@@ -59,7 +47,49 @@ class FigureController extends AbstractController
         ));
     }
 
-    
+    /**
+     * Update figure
+     *
+     * @Route("/update/{id}", name="update")
+     */
+    public function updateFigure($id, Request $request,FigureRepository $figuresRepository, EntityManagerInterface $entityManager)
+    {
+        $figure = $figuresRepository->find($id); 
+        $directoryPhoto = realpath(__DIR__ . '/../../public/uploads/photos');
+        $editForm = $this->createForm(addFigureType::class, $figure);
+
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            foreach ($figure->getPictures() as $picture) {
+                if ($picture->getFile() instanceof UploadedFile && $picture->getFile()->isValid()) {
+                    $newFilename = uniqid() . '.' . $picture->getFile()->getClientOriginalExtension();
+                    $picture->getFile()->move($directoryPhoto, $newFilename);
+                    $picture->setLink($newFilename);
+                }
+            }
+            $entityManager->flush();
+
+        return $this->redirectToRoute('figure_update', ['id' => $id]);
+        }  
+        return $this->render('creationFigure.html.twig', array(
+            'form' => $editForm->createView(),
+            'figure' => $figure
+        ));   
+    }
+
+    /**
+     * delete figure
+     *
+     * @Route("/delete/{id}", name="delete")
+     */
+    public function deleteFigure($id, FigureRepository $figureRepository)
+    {
+        $figure = $figureRepository->find($id);
+        $figureRepository->remove($figure, true);
+        return $this->redirectToRoute('home');
+
+    }
     
     /**
      * Afficher les détails d'une figure

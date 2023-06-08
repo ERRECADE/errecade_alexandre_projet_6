@@ -35,7 +35,7 @@ class Figure
     private $groupe;
 
     /**
-     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="figure" , cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="figure" , cascade={"persist", "remove"}, orphanRemoval = true)
      */
     private $medias;
 
@@ -58,6 +58,7 @@ class Figure
     {
         $this->commentaries = new ArrayCollection();
         $this->medias = new ArrayCollection();
+        $this->createdAt = new \DateTime;
     }
 
     public function getId(): ?int
@@ -175,11 +176,55 @@ class Figure
 
     public function getFirstPicture(): ?Media
     {
-        foreach($this->medias as $media){
-            if($media->getPicture() != null ){
-                return $media;
-            }
+        if($this->getPictures()->first()){
+            return $this->getPictures()->first();
+        }else{
+            return null;
         }
-        return null;
+    }
+
+    public function getVideos(): Collection
+    {
+       $videos = new ArrayCollection;
+       foreach ($this->medias as $media){
+
+        if($media->getType() == "video"){
+            $videos->add($media);
+        }
+       }
+       return $videos;
+    }
+
+    public function addVideo(Media $video): self
+    {
+        $video->setType("video");
+        return $this->addMedia($video);
+    }
+
+    public function removeVideo(Media $video): self
+    {
+        return $this->removeMedia($video);
+    }
+
+    public function getPictures(): Collection
+    {
+       $pictures = new ArrayCollection;
+       foreach ($this->medias as $media){
+        if($media->getType() == "picture"){
+            $pictures->add($media);
+        }
+       }
+       return $pictures;
+    }
+
+    public function addPicture(Media $picture): self
+    {
+        $picture->setType("picture");
+        return $this->addMedia($picture);
+    }
+
+    public function removePicture(Media $picture): self
+    {
+        return $this->removeMedia($picture);
     }
 }

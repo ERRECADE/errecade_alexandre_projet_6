@@ -60,6 +60,6 @@ class FigureRepository extends ServiceEntityRepository
             ->andWhere('f.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
-            ->getResult();
+            ->getSingleResult();
     }
 }

@@ -14,25 +14,28 @@
                 </div>
                 <div class="row justify-content-center">
                 {% for figure in figures %}
-                   {{dump(figures)}}
                     <div class="col-md-6 col-lg-4 mb-5">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
                               <a href="{{ path('figure_detail', { 'id': figure.id }) }}">
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                                {% if figure.firstPicture  %}
-                                <img class="img-fluid" src="{{ asset('uploads/photos/' ~ figure.firstPicture.picture) }}" alt="...">
+                            {% if figure.firstPicture  %}
+                            <img class="img-fluid" src="{{ asset('uploads/photos/' ~ figure.firstPicture.link) }}" alt="...">
 
-                                {% else %}
-                                    <img class="img-fluid" src="{{asset ('assets/img/portfolio/cabin.png')}}" alt="..." />
-                                {% endif %}
+                            {% else %}
+                                <img class="img-fluid" src="{{asset ('assets/img/portfolio/cabin.png')}}" alt="..." />
+                            {% endif %}
                         </div>
                         <div class="d-flex align-items-center text-center" style ="margin-left: 3em; margin-top: 1em;">
+                            <h6 class="card-title">{{figure.name}}</h6>
                             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                                <h6 class="card-title">{{figure.name}}</h6>
+                                <a href="{{ path('figure_update', { 'id': figure.id }) }}">
                                 <img class="img-fluid" style ="margin-left: 3em;" src="{{asset ('assets/img/pen.png')}}" alt="..." />
+                                </a>
+                                <a href="{{ path('figure_delete', { 'id': figure.id }) }}">
                                 <img class="img-fluid" style ="margin-left: 3em;" src="{{asset ('assets/img/poubelle.png')}}" alt="..." />
+                                </a>
                              {% else %}
                               <h6 class="card-title">{{figure.name}}</h6>
                             {% endif %}
