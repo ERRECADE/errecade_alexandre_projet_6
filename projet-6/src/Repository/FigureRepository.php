@@ -58,8 +58,11 @@ class FigureRepository extends ServiceEntityRepository
             ->addSelect('m')
             ->leftJoin('f.medias', 'm')
             ->leftJoin('f.commentaries','c')
+            ->leftJoin('f.user','u')
             ->andWhere('f.id = :id')
             ->setParameter('id', $id)
+            ->orderBy('f.createdAt', 'DESC')
+            ->addOrderBy('c.createdAt', 'DESC')
             ->getQuery()
             ->getSingleResult();
     }
