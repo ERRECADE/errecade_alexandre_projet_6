@@ -38,7 +38,7 @@ class Figure
     private $media;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, unique = true)
      */
     private $name;
 
