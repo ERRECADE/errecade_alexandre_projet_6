@@ -125,7 +125,7 @@ public function forgottenPassword(Request $request, MailerService $MailerService
             'html' => $route->getContent()
         ];
         $MailerService->sendEmail($params);
-        //return $this->redirectToRoute('home');
+        return $this->redirectToRoute('home');
     }
 
 

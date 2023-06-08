@@ -6,7 +6,8 @@ use App\Repository\MediaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\ORM\Query\AST\UpdateItem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass=MediaRepository::class)
@@ -29,21 +30,18 @@ class Media
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $picture;
+    private $link;
+    private $file;
+
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="medias" , cascade={"persist", "remove"})
      */
-    private $video;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Figure::class, mappedBy="media")
-     */
-    private $figures;
+    private $figure;
 
     public function __construct()
     {
-        $this->figures = new ArrayCollection();
+         //$this->figure = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -63,57 +61,39 @@ class Media
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getLink(): ?string
     {
-        return $this->picture;
+        return $this->link;
     }
 
-    public function setPicture(?string $picture): self
+    public function setLink(?string $link): self
     {
-        $this->picture = $picture;
+        $this->link = $link;
 
         return $this;
     }
 
-    public function getVideo(): ?string
+    public function getFile(): ?UploadedFile
     {
-        return $this->video;
+        return $this->file;
     }
 
-    public function setVideo(?string $video): self
+    public function setFile( ?UploadedFile $file): self
     {
-        $this->video = $video;
+        $this->file = $file;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Figure>
-     */
-    public function getFigures(): Collection
+    public function getFigure(): ?Figure
     {
-        return $this->figures;
+        return $this->figure;
     }
-
-    public function addFigure(Figure $figure): self
+    
+    public function setFigure(?Figure $figure): self
     {
-        if (!$this->figures->contains($figure)) {
-            $this->figures[] = $figure;
-            $figure->setMedia($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFigure(Figure $figure): self
-    {
-        if ($this->figures->removeElement($figure)) {
-            // set the owning side to null (unless already changed)
-            if ($figure->getMedia() === $this) {
-                $figure->setMedia(null);
-            }
-        }
-
+        $this->figure = $figure;
+    
         return $this;
     }
 }

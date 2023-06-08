@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-use App\Service\FigureService;
+use App\Repository\FigureRepository;
 class HomeController extends AbstractController
 {
     /**
@@ -14,11 +14,11 @@ class HomeController extends AbstractController
      * 
      * @Route("/" , name="home")
      */
-    public function home(FigureService $FigureService)
+    public function home(FigureRepository $figureRepository)
     {
-        $figures = $FigureService->ListFigures();
+        $figures = $figureRepository->findAllFigures();
         return $this->render('home.html.twig',[
-            'figures' => $figures,
+            'figures' => $figures
         ]);
     }
 

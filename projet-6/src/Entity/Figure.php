@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\FigureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=FigureRepository::class)
+ * @UniqueEntity("name")
  */
 class Figure
 {
@@ -33,9 +35,9 @@ class Figure
     private $groupe;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Media::class, inversedBy="figures")
+     * @ORM\OneToMany(targetEntity=Media::class, mappedBy="figure" , cascade={"persist", "remove"}, orphanRemoval = true)
      */
-    private $media;
+    private $medias;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true, unique = true)
@@ -55,6 +57,8 @@ class Figure
     public function __construct()
     {
         $this->commentaries = new ArrayCollection();
+        $this->medias = new ArrayCollection();
+        $this->createdAt = new \DateTime;
     }
 
     public function getId(): ?int
@@ -82,18 +86,6 @@ class Figure
     public function setGroupe(?groupe $groupe): self
     {
         $this->groupe = $groupe;
-
-        return $this;
-    }
-
-    public function getMedia(): ?media
-    {
-        return $this->media;
-    }
-
-    public function setMedia(?media $media): self
-    {
-        $this->media = $media;
 
         return $this;
     }
@@ -150,5 +142,89 @@ class Figure
         }
 
         return $this;
+    }
+
+       /**
+     * @return Collection<int, Media>
+     */
+    public function getMedias(): Collection
+    {
+        return $this->medias;
+    }
+
+    public function addMedia(Media $media): self
+    {
+        if (!$this->medias->contains($media)) {
+            $this->medias[] = $media;
+            $media->setFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedia(Media $media): self
+    {
+        if ($this->medias->removeElement($media)) {
+            // set the owning side to null (unless already changed)
+            if ($media->getFigure() === $this) {
+                $media->setFigure(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFirstPicture(): ?Media
+    {
+        if($this->getPictures()->first()){
+            return $this->getPictures()->first();
+        }else{
+            return null;
+        }
+    }
+
+    public function getVideos(): Collection
+    {
+       $videos = new ArrayCollection;
+       foreach ($this->medias as $media){
+
+        if($media->getType() == "video"){
+            $videos->add($media);
+        }
+       }
+       return $videos;
+    }
+
+    public function addVideo(Media $video): self
+    {
+        $video->setType("video");
+        return $this->addMedia($video);
+    }
+
+    public function removeVideo(Media $video): self
+    {
+        return $this->removeMedia($video);
+    }
+
+    public function getPictures(): Collection
+    {
+       $pictures = new ArrayCollection;
+       foreach ($this->medias as $media){
+        if($media->getType() == "picture"){
+            $pictures->add($media);
+        }
+       }
+       return $pictures;
+    }
+
+    public function addPicture(Media $picture): self
+    {
+        $picture->setType("picture");
+        return $this->addMedia($picture);
+    }
+
+    public function removePicture(Media $picture): self
+    {
+        return $this->removeMedia($picture);
     }
 }
