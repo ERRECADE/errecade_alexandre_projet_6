@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="text-center">
+  {% if figure is iterable and figure|length > 0 %}
+    {% set premierMedia = figure[0].medias.first() %}
+    <img class="img-fluid rounded mx-auto d-block" src="{{ asset('uploads/photos/' ~ premierMedia.picture) }}" style="max-width: 700px; max-height: 700px;">
+    <div class="row justify-content-center" style="margin: 2em;">
+      <div class="col-12 col-md-6 d-flex flex-wrap">
+        {% for media in figure[0].medias %}
+          <div class="col-sm-4">
+            <img src="{{ asset('uploads/photos/' ~ media.picture) }}" alt="Image" style="max-width: 200px; max-height: 200px; margin-top: 2em; margin-left: auto; margin-right: auto;">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+              <img class="img-fluid" style="margin: 1em;" src="{{asset ('assets/img/pen.png')}}" />
+              <img class="img-fluid" style="margin: 1em;" src="{{asset ('assets/img/poubelle.png')}}" />
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="col-12 col-md-6 d-flex flex-wrap">
+        {% for media in figure[0].medias %}
+          <div class="col-sm-4">
+            <div class="embed-responsive embed-responsive-1by1" style="max-width: 200px; max-height: 200px; margin-top: 2em; margin-left: 2em; margin-right: auto;">
+              <iframe class="embed-responsive-item" src="{{ media.video }}" allowfullscreen></iframe>
+              {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <img class="img-fluid" style="margin: 1em;" src="{{asset ('assets/img/pen.png')}}" />
+                <img class="img-fluid" style="margin: 1em;" src="{{asset ('assets/img/poubelle.png')}}" />
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+  <div class="row justify-content-center" style="margin: 2em;">
+    <div class="col-12 col-md-8">
+      <p>
+        {{figure[0].description}}
+      </p>
+      <hr class="my-4">
+      <div class="d-flex justify-content-between">
+        <div class="border p-3">
+          {{figure[0].name}}
+        </div>
+        <div class="border p-3">
+          {{figure[0].createdAt.format('Y-m-d')}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
