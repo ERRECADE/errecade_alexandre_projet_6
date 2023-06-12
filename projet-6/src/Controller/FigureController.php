@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Helper\YoutubeHelper;
 use Twig\Environment;
 use App\Twig\YouTubeExtension;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 use App\Entity\Figure;
 use App\Entity\Media;
@@ -125,11 +126,25 @@ class FigureController extends AbstractController
             $commentaryRepository->add($comme, true);
             return $this->redirectToRoute('figure_detail', ['id' => $id]);
         }
+        $page = $request->query->getInt('page', 1);
+        $limit = 10;
+        $query = $commentaryRepository->createQueryBuilder('c')->andWhere('c.figure = :figure')->setParameter('figure',$figure)->orderBy('c.createdAt', 'DESC');
+        $paginator = new Paginator($query);
+        $totalItems = count($paginator); 
+        $totalPages = ceil($totalItems / $limit);
+    
+        $paginator
+            ->getQuery()
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+    
         return $this->render('details.html.twig', array(
             'figure' => $figure,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'paginator' => $paginator,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
         ));
     }
 
 }
-

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 07 juin 2023 à 17:04
+-- Généré le : lun. 12 juin 2023 à 16:34
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.4.9
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `commentary` (
   PRIMARY KEY (`id`),
   KEY `IDX_1CAC12CAA76ED395` (`user_id`),
   KEY `IDX_1CAC12CA5C011B5` (`figure_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `commentary`
@@ -51,9 +51,21 @@ INSERT INTO `commentary` (`id`, `user_id`, `figure_id`, `title`, `message`, `act
 (10, 2, 56, 'super vraiment', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 16:59:53', '2023-06-07 16:59:53'),
 (11, 2, 57, 'Merci', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:00:20', '2023-06-07 17:00:20'),
 (12, 2, 58, 'ah bon ?', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:00:50', '2023-06-07 17:00:50'),
-(13, NULL, 59, 'd\'accord', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:01:51', '2023-06-07 17:01:51'),
-(14, NULL, 59, 'pourquoi ?', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:15', '2023-06-07 17:02:15'),
-(15, NULL, 56, 'magnifique', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43');
+(13, 2, 59, 'd\'accord', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:01:51', '2023-06-07 17:01:51'),
+(14, 2, 59, 'pourquoi ?', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:15', '2023-06-07 17:02:15'),
+(15, 2, 56, 'magnifique', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(16, 2, 56, 'magnifique 2', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(17, 2, 56, 'magnifique 3', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(18, 2, 56, 'magnifique 4', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(19, 2, 56, 'magnifique 5', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(20, 2, 56, 'magnifique 6', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(21, 2, 56, 'magnifique 7', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(22, 2, 56, 'magnifique 8', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(23, 2, 56, 'magnifique 9', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(24, 2, 56, 'magnifique 10', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(25, 2, 56, 'magnifique 11', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(26, 2, 56, 'magnifique 12', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43'),
+(27, 2, 56, 'magnifique 13', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-07 17:02:43', '2023-06-07 17:02:43');
 
 -- --------------------------------------------------------
 
@@ -102,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `figure` (
   UNIQUE KEY `UNIQ_2F57B37A5E237E06` (`name`),
   KEY `IDX_2F57B37AA76ED395` (`user_id`),
   KEY `IDX_2F57B37A7A45358C` (`groupe_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `figure`
@@ -114,7 +126,11 @@ INSERT INTO `figure` (`id`, `user_id`, `groupe_id`, `name`, `description`, `acti
 (58, 2, 3, 'Back-flips', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit amicos, ferre contra patriam arma illi cum Coriolano debuerunt? num Vecellinum amici regnum adpetentem, num Maelium debuerunt iuvare?', 1, 0, '2023-06-07 16:49:33', NULL),
 (59, 2, 5, 'slides pour débutant', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit amicos, ferre contra patriam arma illi cum Coriolano debuerunt? num Vecellinum amici regnum adpetentem, num Maelium debuerunt iuvare?', 1, 0, '2023-06-07 16:53:00', NULL),
 (60, 2, 7, 'les sauts pour débutant', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit amicos, ferre contra patriam arma illi cum Coriolano debuerunt? num Vecellinum amici regnum adpetentem, num Maelium debuerunt iuvare?', 1, 0, '2023-06-07 16:56:26', NULL),
-(61, 2, 8, 'une petite barre', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit amicos, ferre contra patriam arma illi cum Coriolano debuerunt? num Vecellinum amici regnum adpetentem, num Maelium debuerunt iuvare?', 1, 0, '2023-06-07 16:59:03', NULL);
+(61, 2, 8, 'une petite barre', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit amicos, ferre contra patriam arma illi cum Coriolano debuerunt? num Vecellinum amici regnum adpetentem, num Maelium debuerunt iuvare?', 1, 0, '2023-06-07 16:59:03', NULL),
+(62, 2, 7, 'petit 180', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-12 16:27:10', NULL),
+(63, 2, 7, '360', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit', 1, 0, '2023-06-12 16:27:52', NULL),
+(64, 2, 7, 'mega sauts', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit amicos, ferre contra patriam arma illi cum Coriolano debuerunt? num Vecellinum amici regnum adpetentem, num Maelium debuerunt iuvare?', 1, 0, '2023-06-12 16:30:38', NULL),
+(65, 2, 1, 'Grabs arrière', 'Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit amicos, ferre contra patriam arma illi cum Coriolano debuerunt? num Vecellinum amici regnum adpetentem, num Maelium debuerunt iuvare?', 1, 0, '2023-06-12 16:31:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -157,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `media` (
   `figure_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_6A2CA10C5C011B5` (`figure_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `media`
@@ -187,7 +203,15 @@ INSERT INTO `media` (`id`, `type`, `link`, `figure_id`) VALUES
 (82, 'video', 'https://www.youtube.com/watch?v=12OHPNTeoRs', 61),
 (83, 'video', 'https://www.youtube.com/watch?v=spZPdWCSkLk', 61),
 (84, 'picture', '6480b758eae77.jpg', 61),
-(85, 'picture', '6480b758ebe4a.jpg', 61);
+(85, 'picture', '6480b758ebe4a.jpg', 61),
+(86, 'video', 'https://www.youtube.com/watch?v=HJiAYHGQApU', 62),
+(87, 'picture', '648747601123b.jpg', 62),
+(88, 'video', 'https://www.youtube.com/watch?v=9T5AWWDxYM4', 63),
+(89, 'picture', '64874788a7308.jpg', 63),
+(90, 'video', 'https://www.youtube.com/watch?v=AMH992l_nRg', 64),
+(91, 'picture', '6487482e62841.jpg', 64),
+(92, 'video', 'https://www.youtube.com/watch?v=CA5bURVJ5zk', 65),
+(93, 'picture', '64874869ce2dc.jpg', 65);
 
 -- --------------------------------------------------------
 
