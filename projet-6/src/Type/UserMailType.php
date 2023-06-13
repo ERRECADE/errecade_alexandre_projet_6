@@ -13,7 +13,9 @@ class UserMailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('mail', TextType::class)
+            ->add('mail', TextType::class, [
+                'attr' => ['class' => 'form-control']
+            ])
         ;
     }
     

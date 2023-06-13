@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Form\Type\UserType;
 use App\Form\Type\UserMailType;
 use App\Form\Type\UserUpdateMdpType;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -100,8 +101,9 @@ class UserController extends AbstractController
      * 
  * @Route("/forgottenPassword", name="mdp_mail")
  */
-public function forgottenPassword(Request $request, MailerService $MailerService,UrlGeneratorInterface $urlGenerator,UserRepository $userRepository)
+public function forgottenPassword(Request $request, MailerService $MailerService,UrlGeneratorInterface $urlGenerator,UserRepository $userRepository, SessionInterface $session)
 {
+    $fromEmail = $_ENV['MAILER_FROM'];
     $form = $this->createForm(UserMailType::class);
     $form->handleRequest($request);
     if ($form->isSubmitted() && $form->isValid()) {
@@ -118,13 +120,14 @@ public function forgottenPassword(Request $request, MailerService $MailerService
             RedirectResponse::HTTP_CREATED
         );
         $params = [
-            'from' => 'alex.errecade@hotmail.com',
+            'from' => $fromEmail,
             'to' => $form->getData()->getMail(),
             'subject' => 'reset password',
             'text' => 'cliquez ici pour reset votre password ',
             'html' => $route->getContent()
         ];
         $MailerService->sendEmail($params);
+        $session->getFlashBag()->add('success', 'Un email a été envoyé.');
         return $this->redirectToRoute('home');
     }
 

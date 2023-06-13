@@ -14,9 +14,15 @@ class CommentaryType extends AbstractType
         $builder   
             ->add('title' ,TextType::class, [
                 'required' => false, 
+                'attr' => [
+                    'class' => 'form-control'
+                ]
             ])
             ->add('message' ,TextType::class, [
                 'required' => false, 
+                'attr' => [
+                    'class' => 'form-control'
+                ]
             ])
         ;
 

@@ -52,14 +52,16 @@
             {{ figure.createdAt.format('Y-m-d') }}
           </div>
         </div>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
         <hr class="my-5">
           <main class="form-signin" >
             {{ form_start(form, {'method': 'POST'} ) }}
                 {{ form_row(form.title) }}
                 {{ form_row(form.message) }}
-              <button class="w-25 btn btn-lg btn-primary" type="submit">Laisse donc un commentaire</button>
+              <button class="w-100 btn btn-lg btn-primary" type="submit">Laisse donc un commentaire</button>
             {{ form_end(form) }}
           </main>
+        {% endif %}
         <hr class="my-5">
          {% for comment in paginator %}
           <div class="border p-3" style="margin-bottom: 1em;">

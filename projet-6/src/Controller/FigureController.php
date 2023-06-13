@@ -12,6 +12,7 @@ use App\Helper\YoutubeHelper;
 use Twig\Environment;
 use App\Twig\YouTubeExtension;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use App\Entity\Figure;
 use App\Entity\Media;
@@ -36,7 +37,7 @@ class FigureController extends AbstractController
      * 
      * @Route("/create" , name="create")
      */
-    public function createFigure(Request $request,FigureRepository $figuresRepository)
+    public function createFigure(Request $request,FigureRepository $figuresRepository, SessionInterface $session)
     {
         $directoryPhoto = realpath(__DIR__ . '/../../public/uploads/photos');
         $figure = new Figure();
@@ -52,6 +53,7 @@ class FigureController extends AbstractController
                 }
             }
             $figuresRepository->add($figure, true);
+            $session->getFlashBag()->add('success', 'La figure a été créée avec succès.');
             return $this->redirectToRoute('home');
         }
         return $this->render('creationFigure.html.twig', array(
@@ -64,7 +66,7 @@ class FigureController extends AbstractController
      *
      * @Route("/update/{id}", name="update")
      */
-    public function updateFigure($id, Request $request,FigureRepository $figuresRepository, EntityManagerInterface $entityManager)
+    public function updateFigure($id, Request $request,FigureRepository $figuresRepository, EntityManagerInterface $entityManager, SessionInterface $session)
     {
         $figure = $figuresRepository->find($id); 
         $directoryPhoto = realpath(__DIR__ . '/../../public/uploads/photos');
@@ -81,7 +83,7 @@ class FigureController extends AbstractController
                 }
             }
             $entityManager->flush();
-
+        $session->getFlashBag()->add('success', 'La figure a été modifier avec succès.');
         return $this->redirectToRoute('figure_update', ['id' => $id]);
         }  
         return $this->render('creationFigure.html.twig', array(
@@ -95,10 +97,11 @@ class FigureController extends AbstractController
      *
      * @Route("/delete/{id}", name="delete")
      */
-    public function deleteFigure($id, FigureRepository $figureRepository)
+    public function deleteFigure($id, FigureRepository $figureRepository,SessionInterface $session)
     {
         $figure = $figureRepository->find($id);
         $figureRepository->remove($figure, true);
+        $session->getFlashBag()->add('success', 'La figure a été suprimer avec succès.');
         return $this->redirectToRoute('home');
 
     }

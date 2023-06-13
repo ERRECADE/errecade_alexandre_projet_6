@@ -3,6 +3,21 @@
 {% block body %}
 <div style="margin-top: 10em; margin-bottom: 10em;">
   <main class="form-signin h-100 w-50 m-auto">
+    {% if app.session.flashBag.has('success') %}
+        <div class="alert alert-success">
+            {% for message in app.session.flashBag.get('success') %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if app.session.flashBag.has('error') %}
+        <div class="alert alert-danger">
+            {% for message in app.session.flashBag.get('error') %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
     {{ form_start(form, {'method': 'POST'}) }}
       <h1 class="h3 mb-3 fw-normal">Ajoutez un nouvelle figure</h1>
       <div class="form-floating">

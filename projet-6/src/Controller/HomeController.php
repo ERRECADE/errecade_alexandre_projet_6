@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use App\Repository\FigureRepository;
 class HomeController extends AbstractController
@@ -14,11 +15,15 @@ class HomeController extends AbstractController
      * 
      * @Route("/" , name="home")
      */
-    public function home(FigureRepository $figureRepository)
+    public function home(FigureRepository $figureRepository, SessionInterface $session)
     {
         $figures = $figureRepository->findAllFigures();
+        $successMessages = $session->getFlashBag()->get('success');
+        $errorMessages = $session->getFlashBag()->get('error');
         return $this->render('home.html.twig',[
-            'figures' => $figures
+            'figures' => $figures,
+            'successMessages' => $successMessages,
+            'errorMessages' => $errorMessages,
         ]);
     }
 
