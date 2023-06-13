@@ -40,25 +40,24 @@ class FigureRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    
+
     public function findAllFigures()
     {
         return $this->createQueryBuilder('f')
             ->addSelect('m')
-            ->leftJoin('f.medias','m')
+            ->leftJoin('f.medias', 'm')
             ->getQuery()
             ->getResult()
             ;
-       ;
-
+        ;
     }
     public function findOneByFigures($id)
     {
         return $this->createQueryBuilder('f')
             ->addSelect('m')
             ->leftJoin('f.medias', 'm')
-            ->leftJoin('f.commentaries','c')
-            ->leftJoin('f.user','u')
+            ->leftJoin('f.commentaries', 'c')
+            ->leftJoin('f.user', 'u')
             ->andWhere('f.id = :id')
             ->setParameter('id', $id)
             ->orderBy('f.createdAt', 'DESC')

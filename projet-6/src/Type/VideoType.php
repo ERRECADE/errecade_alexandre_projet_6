@@ -7,11 +7,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Media;
+
 class VideoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder   
+        $builder
         ->add('link', TextType::class, [
             'required' => false,
             'attr' => [
@@ -19,9 +20,8 @@ class VideoType extends AbstractType
             ]
         ])
         ;
-
     }
-    
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

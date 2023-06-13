@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use App\Entity\User;
+
 class UserMailType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -18,7 +19,7 @@ class UserMailType extends AbstractType
             ])
         ;
     }
-    
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
