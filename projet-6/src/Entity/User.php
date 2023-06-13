@@ -16,7 +16,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use \App\Traits\ActivableBoolean;
     use \App\Traits\Timestampable;
-    
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -206,7 +206,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->figures->removeElement($figure)) {
             // set the owning side to null (unless already changed)
             if ($figure->getUser() === $this) {
-                
                 $figure->setUser(null);
             }
         }

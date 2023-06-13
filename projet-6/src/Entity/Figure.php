@@ -14,9 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Figure
 {
-
     use \App\Traits\ActivableBoolean;
     use \App\Traits\Timestampable;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -58,7 +58,7 @@ class Figure
     {
         $this->commentaries = new ArrayCollection();
         $this->medias = new ArrayCollection();
-        $this->createdAt = new \DateTime;
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -176,23 +176,22 @@ class Figure
 
     public function getFirstPicture(): ?Media
     {
-        if($this->getPictures()->first()){
+        if ($this->getPictures()->first()) {
             return $this->getPictures()->first();
-        }else{
+        } else {
             return null;
         }
     }
 
     public function getVideos(): Collection
     {
-       $videos = new ArrayCollection;
-       foreach ($this->medias as $media){
-
-        if($media->getType() == "video"){
-            $videos->add($media);
+        $videos = new ArrayCollection();
+        foreach ($this->medias as $media) {
+            if ($media->getType() == "video") {
+                  $videos->add($media);
+            }
         }
-       }
-       return $videos;
+        return $videos;
     }
 
     public function addVideo(Media $video): self
@@ -208,13 +207,13 @@ class Figure
 
     public function getPictures(): Collection
     {
-       $pictures = new ArrayCollection;
-       foreach ($this->medias as $media){
-        if($media->getType() == "picture"){
-            $pictures->add($media);
+        $pictures = new ArrayCollection();
+        foreach ($this->medias as $media) {
+            if ($media->getType() == "picture") {
+                  $pictures->add($media);
+            }
         }
-       }
-       return $pictures;
+        return $pictures;
     }
 
     public function addPicture(Media $picture): self

@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Commentary
 {
-
     use \App\Traits\ActivableBoolean;
     use \App\Traits\Timestampable;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -42,8 +42,8 @@ class Commentary
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime;
-        $this->updatedAt = new \DateTime;
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
     public function getId(): ?int
     {

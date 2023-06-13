@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class Media
 {
-    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -78,7 +77,7 @@ class Media
         return $this->file;
     }
 
-    public function setFile( ?UploadedFile $file): self
+    public function setFile(?UploadedFile $file): self
     {
         $this->file = $file;
 
@@ -89,11 +88,11 @@ class Media
     {
         return $this->figure;
     }
-    
+
     public function setFigure(?Figure $figure): self
     {
         $this->figure = $figure;
-    
+
         return $this;
     }
 }

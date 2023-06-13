@@ -12,7 +12,22 @@
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <div class="row justify-content-center">
+                <div class="row justify-content-center{% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %} flex-wrap{% endif %}">
+                {% if successMessages is not empty %}
+                    <div class="alert alert-success">
+                        {% for message in successMessages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if errorMessages is not empty %}
+                    <div class="alert alert-danger">
+                        {% for message in errorMessages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 {% for figure in figures %}
                     <div class="col-md-6 col-lg-4 mb-5">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal1">
@@ -43,5 +58,7 @@
                 </div>
             </div>
         </section>
+        <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+
 
 {% endblock %}

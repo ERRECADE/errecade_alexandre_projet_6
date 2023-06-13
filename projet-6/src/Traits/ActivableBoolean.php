@@ -7,17 +7,17 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Add Activable behavior to an entity.
  */
-trait ActivableBoolean {
+trait ActivableBoolean
+{
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $actif = 1;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $actif =1;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $is_deleted =0;
+    private $is_deleted = 0;
 
     public function getActif(): ?bool
     {
@@ -42,5 +42,4 @@ trait ActivableBoolean {
 
         return $this;
     }
-
 }

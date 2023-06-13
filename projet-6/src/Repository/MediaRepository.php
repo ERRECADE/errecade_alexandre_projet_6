@@ -38,7 +38,7 @@ class MediaRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    
+
     // public function findOneByIdFigure($figureId)
     // {
     //         return $this->createQueryBuilder('m')

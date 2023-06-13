@@ -11,12 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Form\Type\UserType;
 use App\Form\Type\UserMailType;
 use App\Form\Type\UserUpdateMdpType;
-
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
-
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\MailerService;
@@ -26,10 +25,9 @@ use App\Service\MailerService;
  */
 class UserController extends AbstractController
 {
-
     /**
      * Page de connexion
-     * 
+     *
      * @Route("/connexion" , name="connexion")
      */
     public function userConnexion(AuthenticationUtils $authenticationUtils): Response
@@ -64,15 +62,14 @@ class UserController extends AbstractController
                RedirectResponse::HTTP_SEE_OTHER
            );
            $event->setResponse($response);
-       
     }
 
      /**
      * Page d'inscription
-     * 
+     *
      * @Route("/inscription" , name="inscription")
      */
-    public function newFormulaireInscription(Request $request, UserRepository $UserRepository,UserPasswordHasherInterface $passwordHasher)
+    public function newFormulaireInscription(Request $request, UserRepository $UserRepository, UserPasswordHasherInterface $passwordHasher)
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -86,10 +83,10 @@ class UserController extends AbstractController
                 $plainPassword
             );
             $user->setPassword($hashedPassword);
-            $UserRepository->add($user,true);
+            $UserRepository->add($user, true);
             return $this->redirectToRoute('user_connexion');
         }
-    
+
 
         return $this->render('inscription.html.twig', array(
             'form' => $form->createView(),
@@ -97,67 +94,67 @@ class UserController extends AbstractController
     }
 
     /**
-     * 
+     *
  * @Route("/forgottenPassword", name="mdp_mail")
  */
-public function forgottenPassword(Request $request, MailerService $MailerService,UrlGeneratorInterface $urlGenerator,UserRepository $userRepository)
-{
-    $form = $this->createForm(UserMailType::class);
-    $form->handleRequest($request);
-    if ($form->isSubmitted() && $form->isValid()) {
-        //$route = $this->generateUrl('user_mdp_reset');
-        $mail = $form->getData()->getMail(); 
-        $user = $userRepository->findOneBy(['mail' => $mail]);
+    public function forgottenPassword(Request $request, MailerService $MailerService, UrlGeneratorInterface $urlGenerator, UserRepository $userRepository, SessionInterface $session)
+    {
+        $fromEmail = $_ENV['MAILER_FROM'];
+        $form = $this->createForm(UserMailType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            //$route = $this->generateUrl('user_mdp_reset');
+            $mail = $form->getData()->getMail();
+            $user = $userRepository->findOneBy(['mail' => $mail]);
 
-        $token = base64_encode($user->getMail());
-        $user->setToken($token);
-        $userRepository->add($user,true);
+            $token = base64_encode($user->getMail());
+            $user->setToken($token);
+            $userRepository->add($user, true);
 
-        $route = new RedirectResponse(
-            $urlGenerator->generate('user_mdp_reset',['token' => $token],UrlGeneratorInterface::ABSOLUTE_URL),
-            RedirectResponse::HTTP_CREATED
-        );
-        $params = [
-            'from' => 'alex.errecade@hotmail.com',
-            'to' => $form->getData()->getMail(),
-            'subject' => 'reset password',
-            'text' => 'cliquez ici pour reset votre password ',
-            'html' => $route->getContent()
-        ];
-        $MailerService->sendEmail($params);
-        return $this->redirectToRoute('home');
-    }
+            $route = new RedirectResponse(
+                $urlGenerator->generate('user_mdp_reset', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL),
+                RedirectResponse::HTTP_CREATED
+            );
+            $params = [
+                'from' => $fromEmail,
+                'to' => $form->getData()->getMail(),
+                'subject' => 'reset password',
+                'text' => 'cliquez ici pour reset votre password ',
+                'html' => $route->getContent()
+            ];
+            $MailerService->sendEmail($params);
+            $session->getFlashBag()->add('success', 'Un email a été envoyé.');
+            return $this->redirectToRoute('home');
+        }
 
 
-    return $this->render('usermail.html.twig', array(
+        return $this->render('usermail.html.twig', array(
         'form' => $form->createView(),
-    ));
-}
+        ));
+    }
 /**
-* 
+*
  * @Route("/newPassword", name="mdp_reset")
  */
-public function newPassword(Request $request ,UserRepository $UserRepository,UserPasswordHasherInterface $passwordHasher)
-{
-    $user = $UserRepository->findOneBy(['token' => $request->query->get('token')]);
-    $form = $this->createForm(UserUpdateMdpType::class, $user);
-    $form->handleRequest($request);
-    if ($form->isSubmitted() && $form->isValid()) {
-        $plainPassword = $form->get('password')->getData();
-        $hashedPassword = $passwordHasher->hashPassword(
-            $user,
-            $plainPassword
-        );
-        $user->setPassword($hashedPassword);
-        $UserRepository->add($user,true);
-        return $this->redirectToRoute('user_connexion');
-    }
+    public function newPassword(Request $request, UserRepository $UserRepository, UserPasswordHasherInterface $passwordHasher)
+    {
+        $user = $UserRepository->findOneBy(['token' => $request->query->get('token')]);
+        $form = $this->createForm(UserUpdateMdpType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plainPassword = $form->get('password')->getData();
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $plainPassword
+            );
+            $user->setPassword($hashedPassword);
+            $UserRepository->add($user, true);
+            return $this->redirectToRoute('user_connexion');
+        }
 
 
-    return $this->render('resetpassword.html.twig', array(
+        return $this->render('resetpassword.html.twig', array(
         'form' => $form->createView(),
-    ));
-}
-
-
+        ));
+    }
 }
